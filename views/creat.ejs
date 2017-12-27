@@ -32,7 +32,7 @@
                     })
                     .then(function (data) {
                         // 注意这里，用的是既有的postId来跳转到文章页面
-                        window.location = '/posts/show?id=' + data.post._id
+                        window.location = '/posts/show?id=' + data.post._id;
                     })
                     .catch(function (err) {
                         alert(err);
