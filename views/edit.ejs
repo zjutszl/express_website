@@ -1,7 +1,7 @@
 <div id="app">
     <div class="col-md-8 col-md-offset-2">
 
-        <h1>新建文章</h1>
+        <h1>修改文章</h1>
         <div class="form-group">
             <input type="text" class="form-control" v-model="title" placeholder="输入文字标题">
         </div>
@@ -15,15 +15,26 @@
 </div>
 
 <script>
+    var postId = '<%= id %>';
     var vm = new Vue({
         el: '#app',
         data: {
             title: '',
             content: ''
         },
+        created() {
+            axios.get('/api/v1/post/' + postId)
+                .then(function (response) {
+                    vm.title = response.data.post.title;
+                    vm.content = response.data.post.content;
+                })
+                .catch(function (err) {
+                    alert(err);
+                })
+        },
         methods: {
             submit() {
-                axios.post('/api/v1/posts', {
+                axios.patch('/api/v1/post/' + postId, {
                     title: vm.title,
                     content: vm.content
                 })
@@ -32,7 +43,7 @@
                     })
                     .then(function (data) {
                         // 注意这里，用的是既有的postId来跳转到文章页面
-                        window.location = '/posts/show?id=' + data.post._id
+                        window.location = '/posts/show?id=' + postId
                     })
                     .catch(function (err) {
                         alert(err);
